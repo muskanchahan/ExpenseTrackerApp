@@ -1,0 +1,63 @@
+h3 {
+    text-align: center;
+    color: #158719;
+}
+
+/* Form and select styling */
+#report-select {
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+.table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    border: 1px solid #158719;
+}
+
+.table th, .table td {
+    border: 1px solid #158719;
+    padding: 12px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #229822;
+    font-weight: bold;
+    color: white;
+}
+
+.table tr:nth-child(even) {
+    background-color: #abd2b5;
+}
+
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Button styling */
+button {
+    background-color: #229822;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #158719;
+}
+
+/* Form display adjustment */
+form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Hide elements initially */
+.hide {
+    display: none;
+}

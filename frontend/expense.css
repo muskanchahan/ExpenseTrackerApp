@@ -1,0 +1,152 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1, h2 {
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Container for the sidebar and main content */
+  .container {
+    display: flex;
+    height: calc(100vh - 40px); /* Adjust height based on body padding */
+  }
+  
+  /* Sidebar (25% width) */
+  .sidebar {
+    width: 25%;
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Space between buttons */
+  }
+  
+  /* Main content (75% width) */
+  .main-content {
+    width: 75%;
+    padding: 20px;
+  }
+  
+  /* Button styles */
+  button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+    flex: 1; /* Makes buttons flexible */
+  }
+  
+  /* Button container for responsive layout */
+  .button-container {
+    display: flex;
+    justify-content: space-between; /* Aligns buttons to opposite sides */
+  }
+  
+  /* Form section */
+  #expense-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%; /* Full width within the main content */
+    max-width: 500px; /* Maximum width for larger screens */
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #eee;
+  }
+  
+  #expense-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  #expense-form select,
+  #expense-form input[type="text"],
+  #expense-form input[type="number"],
+  #expense-form input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  
+  #expense-form button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  #expense-form button:hover {
+    background-color: #45a049; /* Darker green */
+  }
+  
+  /* Expenses section */
+  #expenses {
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+  }
+  
+  #expenses h2 {
+    margin-bottom: 10px;
+  }
+  
+  /* Individual expense item styles */
+  .expense-item {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px 0; /* Margin for spacing between items */
+  }
+  
+  /* Pagination controls */
+  #pagination-controls {
+    text-align: center;
+    padding: 5px 10px;
+    margin: 5px 0;
+  }
+  
+  /* Responsiveness */
+  @media (max-width: 765px) {
+    /* Make sidebar take full width */
+    .sidebar {
+        width: 100%; /* Full width on smaller screens */
+        padding: 10px; /* Reduced padding */
+        box-shadow: none; /* No shadow for simpler look */
+    }
+    
+    /* Adjust main content for small screens */
+    .main-content {
+        width: 100%;
+        padding: 10px; /* Reduced padding */
+    }
+  
+    /* Responsive form */
+    #expense-form {
+        width: 90%; /* Full width within smaller screens */
+    }
+  
+    /* Make buttons full width on small screens */
+    .button-container {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+    
+    button {
+        margin: 5px 0; /* Space between stacked buttons */
+        width: 100%; /* Full width */
+    }
+  }
+  

@@ -1,0 +1,27 @@
+#h1{
+    margin-left:40% ;
+}
+#leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#leaderboard-table th, #leaderboard-table td {
+    border: 1px solid #158719;
+    padding: 12px;
+    text-align: center;
+}
+
+#leaderboard-table th {
+    background-color: #229822;
+    font-weight: bold;
+}
+
+#leaderboard-table tr:nth-child(even) {
+    background-color: #abd2b5;
+}
+
+#leaderboard-table tr:hover {
+    background-color: #f1f1f1;
+}
