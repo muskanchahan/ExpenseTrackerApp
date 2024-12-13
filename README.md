@@ -109,5 +109,6 @@ A full-stack application designed to track and manage expenses effectively. The 
 - Enhance the design for better user experience.
 - Optimize backend for scalability.
 - Add comprehensive test cases.
+- use the sendinblue and nodemailer thong to send the rest password mail to the user mail account 
 
 ---
