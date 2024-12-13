@@ -1,152 +1,292 @@
+ /* Basic Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  
-  h1, h2 {
-    margin-bottom: 15px;
-    text-align: center;
-  }
-  
-  /* Container for the sidebar and main content */
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9;
+  color: #333;
+  padding: 20px;
+}
+
+.header h1 {
+  text-align: center;
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+/* Container for layout */
+.container {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 80px);
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 25%;
+  background-color: #e8f5e9;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* .sidebar div button {
+  background-color: #81c784;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+#divPre button{
+  background-color: #81c784;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}  */
+
+.sidebar button,
+#divPre button,
+#openCalculatorBtn {
+  margin-bottom: 9px;
+  width: 100%; /* Full width */
+  background-color: #81c784;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  text-align: center;
+}
+
+
+.sidebar button:hover,
+#divPre button:hover,
+#openCalculatorBtn:hover {
+  background-color: #66bb6a;
+}
+
+/* Open Calculator button with image */
+#openCalculatorBtn img {
+  width: 24px; /* Adjust icon size */
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+/* Main content styling */
+.main-content {
+  width: 75%;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.form-section h2 {
+  color: #388e3c;
+  margin-bottom: 15px;
+}
+
+/* Expense Form styling */
+#expense-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+#expense-form label {
+  font-weight: bold;
+  color: #333;
+}
+
+#expense-form select,
+#expense-form input[type="text"],
+#expense-form input[type="number"],
+#expense-form input[type="date"],
+#expense-form button {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#expense-form button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#expense-form button:hover {
+  background-color: #388e3c;
+}
+
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+}
+
+thead {
+  background-color: #4CAF50;
+  color: white;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f1f8e9;
+}
+
+tbody tr:hover {
+  background-color: #e0f7fa;
+}
+
+td button {
+  background-color: #81c784;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+td button:hover {
+  background-color: #66bb6a;
+}
+
+/* Pagination */
+#pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+#pagination-controls button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#pagination-controls button:hover {
+  background-color: #388e3c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .container {
-    display: flex;
-    height: calc(100vh - 40px); /* Adjust height based on body padding */
+      flex-direction: column;
   }
-  
-  /* Sidebar (25% width) */
-  .sidebar {
-    width: 25%;
-    background-color: #f0f0f0;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    gap: 15px; /* Space between buttons */
+
+  .sidebar, .main-content {
+      width: 100%;
   }
-  
-  /* Main content (75% width) */
-  .main-content {
-    width: 75%;
-    padding: 20px;
-  }
-  
-  /* Button styles */
-  button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 4px;
+}
+
+
+#expenseCalculator{
+  #openCalculatorBtn {
+    font-size: 16px;
+    padding: 10px 20px;
     cursor: pointer;
-    transition: 0.3s;
-    flex: 1; /* Makes buttons flexible */
-  }
-  
-  /* Button container for responsive layout */
-  .button-container {
-    display: flex;
-    justify-content: space-between; /* Aligns buttons to opposite sides */
-  }
-  
-  /* Form section */
-  #expense-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%; /* Full width within the main content */
-    max-width: 500px; /* Maximum width for larger screens */
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #eee;
-  }
-  
-  #expense-form label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  #expense-form select,
-  #expense-form input[type="text"],
-  #expense-form input[type="number"],
-  #expense-form input[type="date"] {
+}
+
+/* Popup overlay */
+.calculator-popup {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-  }
-  
-  #expense-form button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 12px 20px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+/* Calculator container */
+.calculator {
+    background-color: #388e3c;
+    width: 250px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Display */
+.display input {
+    width: 100%;
+    height: 50px;
+    background-color: #000;
+    color: #fff;
+    font-size: 24px;
+    text-align: right;
+    padding: 5px;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  #expense-form button:hover {
-    background-color: #45a049; /* Darker green */
-  }
-  
-  /* Expenses section */
-  #expenses {
-    margin-top: 30px;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
-  }
-  
-  #expenses h2 {
+    border-radius: 5px;
     margin-bottom: 10px;
-  }
-  
-  /* Individual expense item styles */
-  .expense-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 5px 0; /* Margin for spacing between items */
-  }
-  
-  /* Pagination controls */
-  #pagination-controls {
-    text-align: center;
-    padding: 5px 10px;
-    margin: 5px 0;
-  }
-  
-  /* Responsiveness */
-  @media (max-width: 765px) {
-    /* Make sidebar take full width */
-    .sidebar {
-        width: 100%; /* Full width on smaller screens */
-        padding: 10px; /* Reduced padding */
-        box-shadow: none; /* No shadow for simpler look */
-    }
-    
-    /* Adjust main content for small screens */
-    .main-content {
-        width: 100%;
-        padding: 10px; /* Reduced padding */
-    }
-  
-    /* Responsive form */
-    #expense-form {
-        width: 90%; /* Full width within smaller screens */
-    }
-  
-    /* Make buttons full width on small screens */
-    .button-container {
-        flex-direction: column; /* Stack buttons vertically */
-    }
-    
-    button {
-        margin: 5px 0; /* Space between stacked buttons */
-        width: 100%; /* Full width */
-    }
-  }
-  
+}
+
+/* Calculator buttons */
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.buttons button {
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    background-color: #333;
+    border-radius: 5px;
+    transition: background 0.2s;
+}
+
+.buttons button:hover {
+    background-color: #555;
+}
+
+.clear {
+    background-color: #ff6666;
+}
+}
