@@ -1,56 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="expense.css">
 </head>
-<body>
-    <h1>Expense Tracker</h1>
 
-    <!-- Container for two parts -->
+<body>
+    <div class="header">
+        <h1>Expense Tracker</h1>
+    </div>
+
+    <!-- Container for sidebar and main content -->
     <div class="container">
-        <!-- First part (25%) -->
+        <!-- Sidebar -->
         <div class="sidebar">
             <button id="rzp">Buy Premium</button>
-            <button id="leaderbtn">Leaderboard</button>
-            <button id="report">Report</button>
+            <button id="login">Login</button>
+            <div id="divPre">
+                <button id="leaderbtn">Leaderboard</button>
+                <button id="report">Report</button>
+                <button id="openChatBtn">Chat with Us</button>
+                <div id="expenseCalculator">
+                    <!-- Button to open the calculator -->
+                    <div id="openCalculatorBtn" style="cursor: pointer;">
+                        <img src="https://cdn2.iconfinder.com/data/icons/ios7-inspired-mac-icon-set/512/Calculator_512.png"
+                            alt="Open Calculator" class="d-block mx-auto" style="width: 50px; height: 50px;">
+                    </div>
+
+                    <!-- Calculator Popup -->
+                    <div id="calculatorPopup" class="calculator-popup">
+                        <div class="calculator">
+                            <div class="display">
+                                <input type="text" id="display" readonly>
+                            </div>
+                            <div class="buttons">
+                                <!-- Calculator buttons -->
+                                <button onclick="appendNumber('7')">7</button>
+                                <button onclick="appendNumber('8')">8</button>
+                                <button onclick="appendNumber('9')">9</button>
+                                <button onclick="performOperation('/')">/</button>
+
+                                <button onclick="appendNumber('4')">4</button>
+                                <button onclick="appendNumber('5')">5</button>
+                                <button onclick="appendNumber('6')">6</button>
+                                <button onclick="performOperation('*')">*</button>
+
+                                <button onclick="appendNumber('1')">1</button>
+                                <button onclick="appendNumber('2')">2</button>
+                                <button onclick="appendNumber('3')">3</button>
+                                <button onclick="performOperation('-')">-</button>
+
+                                <button onclick="appendNumber('0')">0</button>
+                                <button onclick="appendNumber('.')">.</button>
+                                <button onclick="calculateResult()">=</button>
+                                <button onclick="performOperation('+')">+</button>
+
+                                <button onclick="clearDisplay()" class="clear">C</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Second part (75%) -->
+        <!-- Main Content -->
         <div class="main-content">
-            <section>
+            <section class="form-section">
                 <h2>Add a New Expense</h2>
                 <form id="expense-form">
-                    <div>
-                        <label for="type">Type:</label>
-                        <select id="type" required>
-                            <option value="">Choose one...</option>
-                            <option value="food">Food</option>
-                            <option value="bills">Bills</option>
-                            <option value="entertainment">Entertainment</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" placeholder="Enter expense name" required>
-                    </div>
-                    <div>
-                        <label for="date">Date:</label>
-                        <input type="date" id="date" required>
-                    </div>
-                    <div>
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" placeholder="Enter expense amount" required>
-                    </div>
+                    <label for="type">Type:</label>
+                    <select id="type" required>
+                        <option value="">Choose one...</option>
+                        <option value="food">Food</option>
+                        <option value="bills">Bills</option>
+                        <option value="entertainment">Entertainment</option>
+                    </select>
+
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" placeholder="Enter expense name" required>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" required>
+
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" placeholder="Enter expense amount" required>
+
                     <button type="submit">Add Expense</button>
                 </form>
             </section>
 
             <section id="expenses">
                 <h2>Expenses Details</h2>
-                <ul id="ul"></ul>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expense-table-body"></tbody>
+                </table>
 
                 <!-- Pagination Controls -->
                 <div id="pagination-controls">
@@ -66,5 +121,7 @@
     <script src="expense.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//code.tidio.co/1blgajqquvzaohlptygsbbusewylmsml.js" async></script>
 </body>
+
 </html>
