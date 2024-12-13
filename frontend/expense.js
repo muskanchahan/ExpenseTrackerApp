@@ -1,16 +1,16 @@
-// Selecting DOM elements
 const form = document.getElementById("expense-form");
 const ul = document.getElementById('ul');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
 const currentPageText = document.getElementById('current-page');
-
 let currentPage = 1;
 const itemsPerPage = 5; // Number of items per page
 
-function reloadLike() {
-    window.location.href = window.location.href;
-}
+// Fetch expenses on page load
+document.addEventListener('DOMContentLoaded', () => {
+    fetchExpenses(currentPage);
+    checkPremiumStatus();
+});
 
 // Function to fetch expenses
 function fetchExpenses(page) {
@@ -21,60 +21,34 @@ function fetchExpenses(page) {
     .then((response) => {
         const { expenses, totalItems } = response.data;
         const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-        ul.innerHTML = ''; // Clear the list
-        expenses.forEach(showExpenseDetails); // Display expenses
-        expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
-        // Update pagination controls
-        currentPageText.textContent = `Page ${currentPage}`;
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages;
+        displayExpenses(expenses);
+        updatePaginationControls(totalPages);
     })
     .catch((error) => {
         console.error('Error fetching expense data:', error);
     });
 }
 
-// Ensure you validate input data in form submission
-form.addEventListener('submit', function (event) {
-    event.preventDefault();
-    const amount = parseFloat(document.getElementById('amount').value);
-    
-    if (isNaN(amount) || amount <= 0) {
-        console.error('Invalid amount');
-        return; // Exit if invalid
-    }
+// Display expenses
+function displayExpenses(expenses) {
+    const tbody = document.getElementById('expense-table-body');
+    tbody.innerHTML = ''; // Clear existing data
 
-    const userDetails = {
-        type: document.getElementById('type').value,
-        name: document.getElementById('name').value,
-        date: document.getElementById('date').value,
-        amount: amount
-    };
-    
-    const token = localStorage.getItem('token');
-    
-    axios.post('http://localhost:3000/api/ExpenseTracker', userDetails, {
-        headers: { 'Authorization': `Bearer ${token}` }
-    })
-    .then(() => {
-        console.log('Expense added successfully');
-        fetchExpenses(currentPage); // Call to refresh expenses
-    })
-    .catch((error) => {
-        console.error('Error adding expense:', error);
+    expenses.sort((a, b) => new Date(b.date) - new Date(a.date));
+    expenses.forEach((expense) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${expense.date}</td>
+            <td>${expense.amount}</td>
+            <td>${expense.type}</td>
+            <td>${expense.name}</td>
+            <td>
+                <button onclick="deleteExpense('${expense.id}', this)">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(row);
     });
-    form.reset();
-});
-
-
-// Fetch expenses on page load
-document.addEventListener('DOMContentLoaded', () => {
-    fetchExpenses(currentPage);
-});
-
- 
- 
+}
 
 // Pagination controls
 prevBtn.addEventListener('click', () => {
@@ -89,140 +63,59 @@ nextBtn.addEventListener('click', () => {
     fetchExpenses(currentPage);
 });
 
-// Function to display expense details
-function showExpenseDetails(expense) {
-    const li = document.createElement('li');
-    const liText = document.createElement('span'); 
-    liText.textContent = `On ${expense.date}, we paid ${expense.amount} for ${expense.type} on ${expense.name}`;
-    
-    li.appendChild(liText);
-    li.className = 'list';
-    li.style.cssText = 'margin: 15px; background-color: gray; color: white; display: flex; justify-content: space-between; align-items: center;';
-    ul.appendChild(li);
-
-    const buttonContainer = document.createElement('div');
-    li.appendChild(buttonContainer);
-
-    // Delete Button
-    createButton(buttonContainer, 'Delete Expense', '#4CAF50', () => deleteExpense(expense.id, li));
-
-    // Edit Button
-    createButton(buttonContainer, 'Edit Expense', '#4CAF50', () => {
-        toggleEditForm(li);
-    });
-
-    // Edit Form
-    const editForm = createEditForm(expense);
-    li.appendChild(editForm);
+function updatePaginationControls(totalPages) {
+    currentPageText.textContent = `Page ${currentPage}`;
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages;
 }
 
-// Helper function to create buttons
-function createButton(container, text, color, onClick) {
-    const button = document.createElement('button');
-    button.textContent = text;
-    button.style.cssText = `background-color: ${color}; color: white; border: none; border-radius: 4px; padding: 10px 20px; cursor: pointer; margin-right: 10px;`;
-    button.addEventListener('click', onClick);
-    container.appendChild(button);
-    return button;
-}
+// Form submission for adding a new expense
+form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const amount = parseFloat(document.getElementById('amount').value);
 
-// Helper function to create an edit form
-function createEditForm(expense) {
-    const editForm = document.createElement('form');
-    editForm.style.display = 'none';
-    editForm.style.flexDirection = 'column';
-    editForm.style.marginTop = '10px';
+    if (isNaN(amount) || amount <= 0) {
+        console.error('Invalid amount');
+        return;
+    }
 
-    const fields = ['type', 'name', 'date', 'amount'];
-    const inputs = {}; // Object to store inputs for easier access
+    const userDetails = {
+        type: document.getElementById('type').value,
+        name: document.getElementById('name').value,
+        date: document.getElementById('date').value,
+        amount: amount
+    };
 
-    fields.forEach(field => {
-        const label = document.createElement('label');
-        label.textContent = `Enter ${field}:`;
-        const input = document.createElement('input');
-        input.type = field === 'date' ? 'date' : field === 'amount' ? 'number' : 'text';
-        input.value = expense[field];
-        input.name = field; // Use field name for easier identification
-        inputs[field] = input; // Store input in the object
-        editForm.appendChild(label);
-        editForm.appendChild(input);
-    });
-
-    const editSubmitBtn = createButton(editForm, 'Save', '#4CAF50', (event) => {
-        event.preventDefault();
-        
-        // Construct the updated details object correctly
-        const updatedDetails = {
-            type: inputs['type'].value,
-            name: inputs['name'].value,
-            date: inputs['date'].value,
-            amount: inputs['amount'].value
-        };
-
-        updateExpense(expense.id, updatedDetails);
-        editForm.style.display = 'none'; // Hide the form
-    });
-
-    const editCancelBtn = createButton(editForm, 'Cancel', '#f44336', (event) => {
-        event.preventDefault();
-        editForm.style.display = 'none'; // Hide the form
-    });
-
-    return editForm;
-}
-
-// Function to toggle the visibility of the edit form
-function toggleEditForm(li) {
-    const editForm = li.querySelector('form');
-    editForm.style.display = editForm.style.display === 'none' ? 'flex' : 'none';
-}
-
-// Function to update an expense
-function updateExpense(expenseId, updatedData) {
     const token = localStorage.getItem('token');
-    axios.put(`http://localhost:3000/api/ExpenseTracker/${expenseId}`, updatedData, {
+
+    axios.post('http://localhost:3000/api/ExpenseTracker', userDetails, {
         headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(() => {
-        console.log('Expense updated successfully');
-        fetchExpenses(currentPage); // Refresh the list
+        console.log('Expense added successfully');
+        fetchExpenses(currentPage);
     })
     .catch((error) => {
-        console.error('Error updating expense:', error);
+        console.error('Error adding expense:', error);
     });
-}
-// Function to toggle the edit form
-function toggleEditForm(li) {
-    const editForm = li.querySelector('form');
-    editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-}
-
+    form.reset();
+});
 
 // Function to delete an expense
-function deleteExpense(expenseId, li) {
+function deleteExpense(expenseId, button) {
     const token = localStorage.getItem('token');
     axios.delete(`http://localhost:3000/api/ExpenseTracker/${expenseId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
     })
     .then(() => {
-        ul.removeChild(li);
+        const row = button.closest('tr');
+        row.parentNode.removeChild(row);
         console.log('Expense deleted successfully');
     })
     .catch((error) => {
         console.error('Error deleting expense:', error);
     });
 }
-
-
- 
-
- 
- 
-
-// 
-document.getElementById("leaderbtn").addEventListener('click', () => {
-    window.location.href = 'http://localhost:3000/leaderboard'; // Redirect to leaderboard
-});
 
 function parseJwt(token) {
     // If the token has the "Bearer " prefix, remove it
@@ -242,12 +135,12 @@ function parseJwt(token) {
 // Function to check premium status and update the UI accordingly
 function checkPremiumStatus() {
     const token = localStorage.getItem('token');
-    const leaderboardButton = document.getElementById('leaderbtn'); // Get the leaderboard button
+    const  divContainer = document.getElementById('divPre'); // Get the leaderboard button
     if (token) {
         const decodedToken = parseJwt(token);
         if (decodedToken.ispremiumuser) {
             // Show the leaderboard button
-            leaderboardButton.style.display = 'block'; // Ensure button is visible
+             divContainer.style.display = 'block'; // Ensure button is visible
             const button = document.getElementById('rzp'); // Get the buy premium button
             if (button) {
                 const badgeImage = document.createElement('img');
@@ -259,10 +152,10 @@ function checkPremiumStatus() {
             }
         } else {
             // Hide the leaderboard button for non-premium users
-            leaderboardButton.style.display = 'none';
+            divContainer.style.display = 'none';
         }
     } else {
-        leaderboardButton.style.display = 'none'; // Hide the leaderboard button if no token
+         divContainer.style.display = 'none'; // Hide the leaderboard button if no token
     }
 }
 
@@ -336,4 +229,94 @@ document.getElementById('rzp').onclick = async function (e) {
 document.getElementById("report").addEventListener('click', () => {
     window.location.href = 'report.html'; // Redirect to leaderboard
 });
- 
+
+
+document.getElementById("leaderbtn").addEventListener('click', () => {
+    window.location.href = 'http://localhost:3000/leaderboard'; // Redirect to leaderboard
+});
+
+document.getElementById('login').addEventListener('click',()=>{
+    window.location.href='http://localhost:3000/login'
+})
+
+
+document.getElementById('openChatBtn').addEventListener('click', function() {
+    tidioChatApi.open();
+});
+
+
+
+const calculatorPopup = document.getElementById("calculatorPopup");
+const openCalculatorBtn = document.getElementById("openCalculatorBtn");
+
+openCalculatorBtn.addEventListener("click", () => {
+    calculatorPopup.style.display = "flex";
+});
+
+// Calculator display
+const display = document.getElementById("display");
+
+let currentInput = "";
+let operator = null;
+let operand1 = null;
+let expression = ""; // New variable to track the full expression
+
+function appendNumber(number) {
+    currentInput += number;
+    expression += number; // Add number to the expression
+    display.value = expression; // Display the entire expression
+}
+
+function performOperation(op) {
+    if (currentInput) {
+        operand1 = parseFloat(currentInput);
+        operator = op;
+        currentInput = "";
+        expression += ` ${op} `; // Add operator to the expression
+        display.value = expression; // Display the entire expression
+    }
+}
+
+function calculateResult() {
+    if (operator && currentInput) {
+        const operand2 = parseFloat(currentInput);
+        let result;
+
+        switch (operator) {
+            case "+":
+                result = operand1 + operand2;
+                break;
+            case "-":
+                result = operand1 - operand2;
+                break;
+            case "*":
+                result = operand1 * operand2;
+                break;
+            case "/":
+                result = operand2 !== 0 ? operand1 / operand2 : "Error";
+                break;
+            default:
+                result = "Error";
+        }
+
+        display.value = result;
+        expression = result.toString(); // Reset expression to the result
+        currentInput = result.toString();
+        operator = null;
+    }
+}
+
+function clearDisplay() {
+    currentInput = "";
+    operator = null;
+    operand1 = null;
+    expression = ""; // Clear the expression
+    display.value = "";
+}
+
+// Close the calculator when clicking outside of it
+window.addEventListener("click", (event) => {
+    if (event.target === calculatorPopup) {
+        calculatorPopup.style.display = "none";
+    }
+});
